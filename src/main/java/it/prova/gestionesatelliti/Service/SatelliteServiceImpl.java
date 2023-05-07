@@ -98,6 +98,8 @@ public class SatelliteServiceImpl implements SatelliteService {
 
 		Satellite satellite = repository.findById(id).orElse(null);
 		satellite.setDataLancio(LocalDate.now());
+		satellite.setStato(StatoSatellite.IN_MOVIMENTO);
+
 		repository.save(satellite);
 		
 	}
@@ -108,6 +110,7 @@ public class SatelliteServiceImpl implements SatelliteService {
 		
 		Satellite satellite = repository.findById(id).orElse(null);
 		satellite.setDataRientro(LocalDate.now());
+		satellite.setStato(StatoSatellite.DISATTIVATO);
 		repository.save(satellite);		
 	}
 

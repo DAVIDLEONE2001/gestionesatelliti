@@ -20,6 +20,10 @@ public class BindingResultUtils {
 				result.addError(new FieldError("insert_satellite_attr", "dataRientro",
 						"Attenzione rientro antecedente a lancio"));
 			}
+			if (!satellite.getDataRientro().isAfter(LocalDate.now())&&!satellite.getStato().equals(StatoSatellite.DISATTIVATO)) {
+				result.addError(new FieldError("insert_satellite_attr", "dataRientro",
+						"Attenzione stato deve essere disattivato se la data di rientro è passata!"));
+			}
 		}
 		if (satellite.getStato() != StatoSatellite.DISATTIVATO && satellite.getStato() != null
 				&& satellite.getDataLancio() == null) {
