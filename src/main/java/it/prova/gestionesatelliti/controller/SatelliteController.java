@@ -159,4 +159,29 @@ public class SatelliteController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite";
 	}
+	
+	@GetMapping("/emergenzaShow")
+	public ModelAndView emergenzaShow(RedirectAttributes redirectAttrs) {
+		ModelAndView mv = new ModelAndView();
+		int result = satelliteService.lanciatiAttivi().size();
+		mv.addObject("emergenza_list_attribute_size", result);
+		int resultAll = satelliteService.listAllElements().size();
+		if (result<=0||resultAll <= 0) {
+			redirectAttrs.addFlashAttribute("warningMessage", "Nessun satellite in stato d emergenza");
+			mv.setViewName("redirect:/home");
+			return mv;
+		}
+		mv.addObject("emergenza_list_all_attribute_size", resultAll);
+		mv.setViewName("satellite/emergenza");
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return mv;
+	}
+	
+	@PostMapping("/emergenza")
+	public String emergenza(RedirectAttributes redirectAttrs) {
+
+		satelliteService.proceduraEmergenza();
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/home";
+	}
 }

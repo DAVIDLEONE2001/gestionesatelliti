@@ -80,7 +80,9 @@
 											<fmt:formatDate pattern="dd/MM/yyyy"
 												value="${localDateToBeParsed}" /></td>
 										<td>${satelliteItem.stato }</td>
-										<td><a class="btn  btn-sm btn-outline-secondary"
+										<td>
+										<div class="btn btn-sm">
+										<a class="btn  btn-sm btn-outline-secondary"
 											href="${pageContext.request.contextPath}/satellite/show/${satelliteItem.id }">Visualizza</a>
 											<a class="btn  btn-sm btn-outline-primary ml-2 mr-2"
 											href="${pageContext.request.contextPath}/satellite/showEdit/${satelliteItem.id }">Edit</a>
@@ -91,7 +93,8 @@
 											<c:if test="${satelliteItem.dataLancio == null}">
 												<form method="post"
 													action="${pageContext.request.contextPath}/satellite/lancia"
-													novalidate="novalidate">
+													novalidate="novalidate"
+													class="btn-group">
 													<input type="hidden" value="${satelliteItem.id}" name="id"></input>
 
 													<button type="submit" name="submit" id="submit"
@@ -101,14 +104,17 @@
 											</c:if>
 											<form method="post"
 												action="${pageContext.request.contextPath}/satellite/ritorna"
-												novalidate="novalidate">
+												novalidate="novalidate"
+												class="btn-group">
 												<input type="hidden" value="${satelliteItem.id}" name="id"></input>
 												<c:if
 													test="${satelliteItem.stato ne 'DISATTIVATO' and satelliteItem.stato ne null and empty satelliteItem.dataRientro and not empty satelliteItem.dataLancio }">
 													<button type="submit" name="submit1" id="submit1"
 														class="btn btn-primary btn-sm">Ritona</button>
 												</c:if>
-											</form></td>
+											</form>
+											</div>
+											</td>
 									</tr>
 								</c:forEach>
 							</tbody>

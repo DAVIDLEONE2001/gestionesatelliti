@@ -56,6 +56,19 @@
 				<button type="button" class="btn-close" data-bs-dismiss="alert"
 					aria-label="Close"></button>
 			</div>
+			<div
+				class="alert alert-success alert-dismissible fade show  ${successMessage==null?'d-none':'' }"
+				role="alert">
+				${successMessage}
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
+			<div class="alert alert-warning alert-dismissible fade show  ${warningMessage==null?'d-none':'' }"
+				role="alert">
+				${warningMessage}
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
 
 			<div class="p-5 mb-4 bg-light rounded-3">
 				<div class="container-fluid py-5">
@@ -65,7 +78,7 @@
 						create this jumbotron, just like the one in previous versions of
 						Bootstrap.</p>
 					<a class="btn btn-primary btn-lg"
-						href="${pageContext.request.contextPath}/impiegato/search">Vai
+						href="${pageContext.request.contextPath}/satellite/search">Vai
 						a Ricerca</a>
 				</div>
 			</div>
@@ -125,6 +138,27 @@
 						action="${pageContext.request.contextPath}/satellite/fissiUp">
 						<button class="cssbuttons-io-button"
 							onclick="${pageContext.request.contextPath}/satellite/fissiUp">
+							Vai alla lista
+							<div class="icon">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+									width="24" height="24">
+									<path fill="none" d="M0 0h24v24H0z"></path>
+									<path fill="currentColor"
+										d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path></svg>
+							</div>
+						</button>
+					</form>
+				</div>
+				<div class="feature col">
+
+					<h2>Veterani fissi</h2>
+					<p>Con il bottone sottostante verrai portato alla lista di
+						satelliti che sono fissi ma senza una data di ritorno programata
+						quindi ancora in orbita da pi di 10 anni.</p>
+					<form method="get"
+						action="${pageContext.request.contextPath}/satellite/emergenzaShow">
+						<button class="cssbuttons-io-button"
+							onclick="${pageContext.request.contextPath}/satellite/emergenzaShow">
 							Vai alla lista
 							<div class="icon">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"

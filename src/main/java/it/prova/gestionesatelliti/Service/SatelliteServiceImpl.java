@@ -22,7 +22,7 @@ public class SatelliteServiceImpl implements SatelliteService {
 
 	@Autowired
 	private SatelliteRepository repository;
-	
+
 	public SatelliteServiceImpl() {
 	}
 
@@ -43,7 +43,7 @@ public class SatelliteServiceImpl implements SatelliteService {
 	public void aggiorna(Satellite satelliteInstance) {
 
 		repository.save(satelliteInstance);
-		
+
 	}
 
 	@Override
@@ -52,7 +52,6 @@ public class SatelliteServiceImpl implements SatelliteService {
 
 		repository.save(satelliteInstance);
 
-		
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class SatelliteServiceImpl implements SatelliteService {
 	public void rimuovi(Long idSatellite) {
 
 		repository.deleteById(idSatellite);
-		
+
 	}
 
 	@Override
@@ -71,7 +70,8 @@ public class SatelliteServiceImpl implements SatelliteService {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 
 			if (StringUtils.isNotEmpty(example.getDenominazione()))
-				predicates.add(cb.like(cb.upper(root.get("denominazione")), "%" + example.getDenominazione().toUpperCase() + "%"));
+				predicates.add(cb.like(cb.upper(root.get("denominazione")),
+						"%" + example.getDenominazione().toUpperCase() + "%"));
 
 			if (StringUtils.isNotEmpty(example.getCodice()))
 				predicates.add(cb.like(cb.upper(root.get("codice")), "%" + example.getCodice().toUpperCase() + "%"));
@@ -84,12 +84,12 @@ public class SatelliteServiceImpl implements SatelliteService {
 
 			if (example.getDataRientro() != null)
 				predicates.add(cb.greaterThanOrEqualTo(root.get("dataRientro"), example.getDataRientro()));
-			
+
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
 		};
 
 		return repository.findAll(specificationCriteria);
-	
+
 	}
 
 	@Override
@@ -99,45 +99,61 @@ public class SatelliteServiceImpl implements SatelliteService {
 		Satellite satellite = repository.findById(id).orElse(null);
 		satellite.setDataLancio(LocalDate.now());
 		satellite.setStato(StatoSatellite.IN_MOVIMENTO);
-
 		repository.save(satellite);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void ritornaSatellite(Long id) {
-		
+
 		Satellite satellite = repository.findById(id).orElse(null);
 		satellite.setDataRientro(LocalDate.now());
 		satellite.setStato(StatoSatellite.DISATTIVATO);
-		repository.save(satellite);		
+		repository.save(satellite);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Satellite> lanciatiDa2AnniOPiuAttivi() {
-		
-		List<StatoSatellite> attivi = Arrays.asList(StatoSatellite.FISSO,StatoSatellite.IN_MOVIMENTO);
-	
-		return repository.findAllByStatoInAndDataLancioLessThan(attivi,LocalDate.now().minusYears(2));
+
+		List<StatoSatellite> attivi = Arrays.asList(StatoSatellite.FISSO, StatoSatellite.IN_MOVIMENTO);
+
+		return repository.findAllByStatoInAndDataLancioLessThan(attivi, LocalDate.now().minusYears(2));
 	}
 
 	@Override
 	public List<Satellite> disattivatiInOrbita() {
-		
+
 		return repository.findAllByStatoAndDataRientroIsNull(StatoSatellite.DISATTIVATO);
-		
+
 	}
 
 	@Override
 	public List<Satellite> lanciatiDa10AnniFissi() {
-		
+
 		return repository.findAllByStatoAndDataLancioLessThan(StatoSatellite.FISSO, LocalDate.now().minusYears(10));
 	}
-	
-	
+
+	@Override
+	public List<Satellite> lanciatiAttivi() {
+
+		List<StatoSatellite> attivi = Arrays.asList(StatoSatellite.FISSO, StatoSatellite.IN_MOVIMENTO);
+
+		return repository.findAllByStatoInAndDataLancioIsNotNull(attivi);
+
+	}
+
+	@Override
+	@Transactional
+	public void proceduraEmergenza() {
+		
+		List<StatoSatellite> attivi = Arrays.asList(StatoSatellite.FISSO, StatoSatellite.IN_MOVIMENTO);
+
+		repository.updateStatoAndDataRientroByStatiAndDataLancioIsNotNull(StatoSatellite.DISATTIVATO,LocalDate.now(),attivi);
+
+	}
 
 	/**/
-	
+
 }

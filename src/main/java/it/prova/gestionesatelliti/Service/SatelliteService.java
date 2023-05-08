@@ -26,6 +26,9 @@ public interface SatelliteService {
 	public List<Satellite> disattivatiInOrbita();
 	
 	public List<Satellite> lanciatiDa10AnniFissi();
+
+	List<Satellite> lanciatiAttivi();
 	
+	void proceduraEmergenza();
 
 }
